@@ -1,5 +1,4 @@
 package main
-
 import (
 	"encoding/json"
 	"flag"
@@ -17,7 +16,7 @@ const (
 var (
 	listenAddress  = flag.String("web.listen-address", ":9070", "Address on which to expose metrics and web interface.")
 	metricsPath    = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
-	namenodeJmxUrl = flag.String("namenode.jmx.url", "http://localhost:50070/jmx", "Hadoop JMX URL.")
+	namenodeJmxUrl = flag.String("namenode.jmx.url", "http://localhos:50070/jmx", "Hadoop JMX URL.")
 )
 
 type Exporter struct {
@@ -32,10 +31,10 @@ type Exporter struct {
 	CorruptBlocks            prometheus.Gauge
 	ExcessBlocks             prometheus.Gauge
 	StaleDataNodes           prometheus.Gauge
-	pnGcCount                prometheus.Counter
-	pnGcTime                 prometheus.Counter
-	cmsGcCount               prometheus.Counter
-	cmsGcTime                prometheus.Counter
+	pnGcCount                prometheus.Gauge
+	pnGcTime                 prometheus.Gauge
+	cmsGcCount               prometheus.Gauge
+	cmsGcTime                prometheus.Gauge
 	heapMemoryUsageCommitted prometheus.Gauge
 	heapMemoryUsageInit      prometheus.Gauge
 	heapMemoryUsageMax       prometheus.Gauge
@@ -95,22 +94,22 @@ func NewExporter(url string) *Exporter {
 			Name:      "StaleDataNodes",
 			Help:      "StaleDataNodes",
 		}),
-		pnGcCount: prometheus.NewCounter(prometheus.CounterOpts{
+		pnGcCount: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
 			Name:      "ParNew_CollectionCount",
 			Help:      "ParNew GC Count",
 		}),
-		pnGcTime: prometheus.NewCounter(prometheus.CounterOpts{
+		pnGcTime: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
 			Name:      "ParNew_CollectionTime",
 			Help:      "ParNew GC Time",
 		}),
-		cmsGcCount: prometheus.NewCounter(prometheus.CounterOpts{
+		cmsGcCount: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
 			Name:      "ConcurrentMarkSweep_CollectionCount",
 			Help:      "ConcurrentMarkSweep GC Count",
 		}),
-		cmsGcTime: prometheus.NewCounter(prometheus.CounterOpts{
+		cmsGcTime: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
 			Name:      "ConcurrentMarkSweep_CollectionTime",
 			Help:      "ConcurrentMarkSweep GC Time",

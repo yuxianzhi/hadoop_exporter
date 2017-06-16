@@ -5,20 +5,19 @@ import (
 	"flag"
 	"io/ioutil"
 	"net/http"
-	"fmt"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/log"
 )
 
 const (
-	namespace = "resourcemanager"
+	namespace = "spark"
 )
 
 var (
-	listenAddress      = flag.String("web.listen-address", ":9088", "Address on which to expose metrics and web interface.")
+	listenAddress      = flag.String("web.listen-address", ":9099", "Address on which to expose metrics and web interface.")
 	metricsPath        = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
-	resourceManagerUrl = flag.String("resourcemanager.url", "http://localhost:8088", "Hadoop ResourceManager URL.")
+	resourceManagerUrl = flag.String("resourcemanager.url", "http://localhost:8080", "Hadoop ResourceManager URL.")
 )
 
 type Exporter struct {
@@ -241,7 +240,6 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	}
 	m := f.(map[string]interface{})
 	cm := m["clusterMetrics"].(map[string]interface{})
-	fmt.Println(cm["activeNodes"].(float64))
 	e.activeNodes.Set(cm["activeNodes"].(float64))
 	e.rebootedNodes.Set(cm["rebootedNodes"].(float64))
 	e.decommissionedNodes.Set(cm["decommissionedNodes"].(float64))

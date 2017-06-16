@@ -1,12 +1,10 @@
 # Hadoop Exporter for Prometheus
+
 Exports hadoop metrics via HTTP for Prometheus consumption.
 
 How to build
 ```
-go get github.com/prometheus/client_golang/prometheus
-go get github.com/prometheus/log
-go build namenode_exporter.go
-go build resourcemanager_exporter.go
+make
 ```
 
 Help on flags of namenode_exporter:
@@ -29,4 +27,3 @@ Help on flags of resourcemanager_exporter:
     Path under which to expose metrics. (default "/metrics")
 ```
 
-Tested on HDP2.3
